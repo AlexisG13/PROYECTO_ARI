@@ -24,6 +24,15 @@ html(lang='en')
       br
       h2 JWT:
       pre#textoJWT
+
+    h1 JWT -> JSON
+    input#jwt-input(type='text' name='jwt-input')
+    input#jwt-secret(type='text' name='jwt-secret')
+    button#jwtButton() Click me
+    div
+      br
+      pre#output-jwt.
+        
     div
       h1 .json -> .txt
       input#inputfile(type='file' name='inputfile')
@@ -43,6 +52,14 @@ html(lang='en')
         label(for='key') Llave
         input#keyXML(type='text' name='key')
         button#button() Click me
+    div
+      h1 .xml -> .txt 
+        input#xmlFile(type='file' name='filename')
+        label(for='splitter') Delimitador
+        input#xmlSplitter(type='text' name='splitter')
+        label(for='key') Llave
+        input#keyTxt(type='text' name='key')
+        button#xmlButton() Click me
     script(src='javascripts/something.js')
     script(src='javascripts/index.js')
 

@@ -1,5 +1,5 @@
 var express = require('express');
-const { create } = require('xmlbuilder2');
+const { create , convert } = require('xmlbuilder2');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
 
@@ -10,17 +10,31 @@ router.get('/', async function(req, res, next) {
 
 router.post('/generarXML',async function(req,res,next){
     const {txt , delimitador, key} = req.body;
-    console.log(txt);
     const xml = await parseText(txt, delimitador, key);
     res.json({ xml});
 })
 
+router.post('/convertirXML', function(req, res, next){
+    const {xml , delimitador , key} = req.body;
+    const txt = parseXML(xml, delimitador, key);
+    res.json({txt});
+})
+
 router.post('/generarJWT',function(req,res,next){
-  console.log(req.body);
   const {json , key} = req.body;
   const newJwt = jwt.sign({clientes: json}, key);
-  console.log(newJwt);
   res.json({newJwt});
+})
+
+router.post('/generarJSON', function(req,res,next){
+    const {jwtString, secret } = req.body; 
+    try {
+        const jsonObject = getJSON(jwtString, secret);
+        res.json({jsonObject});
+    }
+    catch(err){
+       res.status(400).send('Secreto invalido');
+    }
 })
 
 function parseText( text , splitter , key){
@@ -29,7 +43,7 @@ function parseText( text , splitter , key){
   clients.forEach(client => {
       const clienteData = client.split(splitter);
       if(clienteData.length != 6) throw 'La información del cliente es incorrecta';
-      const tarjetaEncriptada = encrypt(parseInt(clienteData[3]), key);
+      const tarjetaEncriptada = encrypt(parseInt(clienteData[3]), parseInt(key));
       root.ele('cliente')
       .ele('documento').txt(clienteData[0]).up()
       .ele('primer-nombre').txt(clienteData[1]).up()
@@ -41,6 +55,21 @@ function parseText( text , splitter , key){
   });
   const xml = root.end({ prettyPrint: true });
   return xml;
+}
+
+function getJSON(jwtString, secret){
+    const json = jwt.verify(jwtString, secret);
+    return json;
+}
+
+function parseXML(xml , splitter, key){
+    const xmlObject = convert(xml, {format: 'object'});
+    const txt = xmlObject.clientes.cliente.reduce((txt, cliente) => {
+        const tarjetaDecrypt = decrypt(parseInt(cliente['credit-card']), key);
+        txt+=`${cliente.documento}${splitter}${cliente['primer-nombre']}${splitter}${cliente.apellido}${splitter}${tarjetaDecrypt}${splitter}${cliente.tipo}${splitter}${cliente.telefono}\n`;
+        return txt;
+    }, '');
+    return txt;
 }
 
 function encrypt(numeros, key){
@@ -116,7 +145,7 @@ function decrypt(num, key){
         }
 
     }
-    console.log(decifrado);
+    return decifrado;
 }
 
 module.exports = router;
