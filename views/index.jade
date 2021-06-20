@@ -5,14 +5,24 @@ html(lang='en')
     meta(http-equiv='X-UA-Compatible' content='IE=edge')
     meta(name='viewport' content='width=device-width, initial-scale=1.0')
     script(src='https://cdn.jsdelivr.net/npm/xmlbuilder2/lib/xmlbuilder2.min.js')
-    title Document
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous")
+    title Primer Avance
   body
-    div
-    h1 .txt -> .json
-    input#inputfile-txt(type='file' name='inputfile')
-    input#key(type='text' name='key')
-    input#delimitador(type='text' name='delimitador')
-    div
+    div(class="container")
+      h1 Proyecto Administración de Riesgos Informáticos
+    div(class="container p-3 my-3 border")
+      h2 Convierte archivo .txt -> .json
+      input#inputfile-txt(type='file' name='inputfile' class="form-control")
+      br
+      label Ingresa la key
+      br
+      input#key(type='text' name='key' class="form-control")
+      br
+      label Ingresa el delimitador
+      br
+      input#delimitador(type='text' name='delimitador' class="form-control")
+
+    div(class="container p-3 my-3 border")
       br
       pre#output.
         
@@ -22,21 +32,33 @@ html(lang='en')
       #savejsonbtn
       
       br
-      h2 JWT:
+    div(class="container p-3 my-3 border")
+      h2 JSON encriptado con JWT (token)
       pre#textoJWT
-
-    h1 JWT -> JSON
-    input#jwt-input(type='text' name='jwt-input')
-    input#jwt-secret(type='text' name='jwt-secret')
-    button#jwtButton() Click me
-    div
+      h2 Desencriptador JWT a JSON:
+      br
+      label Copia y pega el token generado arriba
+      br
+      input#jwt-input(type='text' name='jwt-input' class="form-control")
+      br
+      label Ingresa la clave para desencriptar 
+      br
+      input#jwt-secret(type='text' name='jwt-secret' class="form-control")
+      br
+      br
+      button(class="btn btn-outline-success")#jwtButton() Desencriptar
+    
+    div(class="container p-3 my-3 border")
       br
       pre#output-jwt.
         
-    div
-      h1 .json -> .txt
-      input#inputfile(type='file' name='inputfile')
-      input#input-del(type='text')
+    div(class="container p-3 my-3 border")
+      h2 Convierte objeto JSON -> .txt
+      input#inputfile(type='file' name='inputfile' class="form-control")
+      br
+      label Ingresa el delimitador
+      br
+      input#input-del(type='text' class="form-control")
       div
         br
         pre#json-upload-show.
@@ -44,22 +66,36 @@ html(lang='en')
         pre#txt-response.
           
         #savetxtbtn
-    div
-      h1 .txt -> .xml 
-        input#txtFile(type='file' name='filename')
-        label(for='splitter') Delimitador
-        input#splitter(type='text' name='splitter')
-        label(for='key') Llave
-        input#keyXML(type='text' name='key')
-        button#button() Click me
-    div
-      h1 .xml -> .txt 
-        input#xmlFile(type='file' name='filename')
-        label(for='splitter') Delimitador
-        input#xmlSplitter(type='text' name='splitter')
-        label(for='key') Llave
-        input#keyTxt(type='text' name='key')
-        button#xmlButton() Click me
+    
+    div(class="container p-3 my-3 border")
+      h2 Convierte un archivo .txt -> .xml 
+      input#txtFile(type='file' name='filename' class="form-control")
+      br
+      label(for='splitter') Delimitador
+      br
+      input#splitter(type='text' name='splitter' class="form-control")
+      br
+      label(for='key') Llave
+      br
+      input#keyXML(type='text' name='key' class="form-control")
+      br
+      br
+      button(class="btn btn-outline-success")#button() Convierte
+    
+    div(class="container p-3 my-3 border")
+      h2 Convierte un archivo .xml -> .txt 
+      input#xmlFile(type='file' name='filename' class="form-control")
+      br
+      label(for='splitter') Delimitador
+      br
+      input#xmlSplitter(type='text' name='splitter' class="form-control")
+      br
+      label(for='key') Llave
+      br
+      input#keyTxt(type='text' name='key' class="form-control")
+      br
+      br
+      button(class="btn btn-outline-success")#xmlButton() Convierte
     script(src='javascripts/something.js')
     script(src='javascripts/index.js')
 
