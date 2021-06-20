@@ -39,9 +39,13 @@ router.post('/generarJSON', function(req,res,next){
 
 function parseText( text , splitter , key){
   const root = create().ele('clientes');
-  const clients = text.split('\n');
+  const clients = text.split('\r');
+  console.log(clients);
   clients.forEach(client => {
       const clienteData = client.split(splitter);
+      console.log(client);
+      console.log(splitter);
+      console.log(clienteData);
       if(clienteData.length != 6) throw 'La información del cliente es incorrecta';
       const tarjetaEncriptada = encrypt(parseInt(clienteData[3]), parseInt(key));
       root.ele('cliente')
@@ -66,7 +70,7 @@ function parseXML(xml , splitter, key){
     const xmlObject = convert(xml, {format: 'object'});
     const txt = xmlObject.clientes.cliente.reduce((txt, cliente) => {
         const tarjetaDecrypt = decrypt(parseInt(cliente['credit-card']), key);
-        txt+=`${cliente.documento}${splitter}${cliente['primer-nombre']}${splitter}${cliente.apellido}${splitter}${tarjetaDecrypt}${splitter}${cliente.tipo}${splitter}${cliente.telefono}\n`;
+        txt+=`${cliente.documento}${splitter}${cliente['primer-nombre']}${splitter}${cliente.apellido}${splitter}${tarjetaDecrypt}${splitter}${cliente.tipo}${splitter}${cliente.telefono}\r`;
         return txt;
     }, '');
     return txt;
